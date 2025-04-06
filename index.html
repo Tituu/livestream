@@ -96,6 +96,13 @@
     .watch-btn:hover {
       background: #00cfa5;
     }
+    .upcoming-note {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #aaa;
+      font-style: italic;
+      text-align: center;
+    }
     footer {
       background: #16191f;
       padding: 25px 15px;
@@ -166,7 +173,9 @@
               </div>
             </div>
             <div class="status ${statusClass}">${statusIcon} ${match.status}</div>
-            ${isLive ? `<a href="watch.html?match=${match.id}" class="watch-btn"><i class="fa-solid fa-play"></i> Watch Now</a>` : ''}
+            ${isLive 
+              ? `<a href="watch.html?match=${match.id}" class="watch-btn"><i class="fa-solid fa-play"></i> Watch Now</a>` 
+              : `<div class="upcoming-note">Starts soon. Stay tuned!</div>`}
           `;
           matchesContainer.appendChild(card);
         });
