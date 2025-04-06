@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Live Stream - Matches</title>
+  <title>Live Matches</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
     body {
@@ -12,7 +12,6 @@
       background: #0f1115;
       color: #fff;
       padding: 40px 20px;
-      background-image: radial-gradient(circle at top left, #1a1d24, #0f1115);
     }
     h1 {
       text-align: center;
@@ -23,47 +22,62 @@
     }
     .match-container {
       display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 25px;
       max-width: 1000px;
       margin: auto;
     }
-    .match {
+    .match-card {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(10px);
       border-radius: 16px;
       padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      text-align: center;
       box-shadow: 0 0 12px rgba(0,255,255,0.05);
       transition: 0.3s ease;
     }
-    .match:hover {
+    .match-card:hover {
       box-shadow: 0 0 20px rgba(0,255,200,0.2);
       transform: translateY(-3px);
     }
     .teams {
       display: flex;
+      justify-content: center;
       align-items: center;
-      gap: 15px;
+      gap: 30px;
+      margin-bottom: 10px;
     }
-    .teams img {
-      width: 45px;
-      height: 45px;
+    .team {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 80px;
+    }
+    .team img {
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       box-shadow: 0 0 6px rgba(255,255,255,0.1);
+      margin-bottom: 8px;
     }
-    .teams strong {
-      font-size: 16px;
+    .team-name {
+      font-size: 14px;
+      text-align: center;
+    }
+    .vs {
+      font-size: 18px;
+      font-weight: bold;
+      color: #bbb;
     }
     .status {
+      margin-top: 12px;
       padding: 6px 14px;
       font-size: 13px;
       border-radius: 20px;
       text-transform: uppercase;
       font-weight: bold;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 8px;
     }
@@ -76,6 +90,7 @@
       color: #ccc;
     }
     .watch-btn {
+      margin-top: 15px;
       background: #00ffc8;
       color: #000;
       font-weight: bold;
@@ -84,7 +99,7 @@
       border-radius: 30px;
       cursor: pointer;
       transition: 0.3s ease;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 8px;
     }
@@ -105,14 +120,18 @@
         container.innerHTML = "";
         data.matches.forEach(match => {
           const div = document.createElement("div");
-          div.className = "match";
+          div.className = "match-card";
           div.innerHTML = `
             <div class="teams">
-              <img src="${match.team1.logo}" alt="${match.team1.name}">
-              <strong>${match.team1.name}</strong>
-              <span>vs</span>
-              <img src="${match.team2.logo}" alt="${match.team2.name}">
-              <strong>${match.team2.name}</strong>
+              <div class="team">
+                <img src="${match.team1.logo}" alt="${match.team1.name}">
+                <div class="team-name">${match.team1.name}</div>
+              </div>
+              <div class="vs">vs</div>
+              <div class="team">
+                <img src="${match.team2.logo}" alt="${match.team2.name}">
+                <div class="team-name">${match.team2.name}</div>
+              </div>
             </div>
             <div class="status ${match.status.toLowerCase()}">
               <i class="fa-solid ${match.status.toLowerCase() === 'live' ? 'fa-circle-dot' : 'fa-clock'}"></i>
