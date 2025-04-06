@@ -15,6 +15,7 @@
       background: #0e0e0e;
       color: #fff;
       padding-bottom: 80px;
+      transition: filter 0.3s ease;
     }
 
     header {
@@ -24,6 +25,10 @@
       font-size: 28px;
       color: #00ffe7;
       text-shadow: 0 0 10px #00ffe7;
+    }
+
+    .blur {
+      filter: blur(5px);
     }
 
     .matches-container {
@@ -40,7 +45,7 @@
       padding: 20px;
       width: 95%;
       max-width: 600px;
-      box-shadow: 0 0 15px rgba(0,255,255,0.15);
+      box-shadow: 0 0 15px rgba(0,255,255,0.1);
       position: relative;
       transition: transform 0.3s;
     }
@@ -85,13 +90,20 @@
       font-size: 13px;
       font-weight: bold;
       border-radius: 20px;
-      background: linear-gradient(135deg, #00ffe7, #00c2ff);
-      box-shadow: 0 0 12px #00ffe7;
-      color: #000;
+      background: linear-gradient(45deg, #ff005c, #ff9500);
+      box-shadow: 0 0 12px #ff4d6d;
+      color: #fff;
       position: absolute;
       top: 15px;
-      right: 15px;
+      left: 15px;
       z-index: 1;
+      animation: pulse 1.2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 12px #ff4d6d; }
+      50% { transform: scale(1.05); box-shadow: 0 0 20px #ff4d6d; }
+      100% { transform: scale(1); box-shadow: 0 0 12px #ff4d6d; }
     }
 
     .upcoming-message {
@@ -137,22 +149,24 @@
 
     .popup {
       position: fixed;
-      top: 20px;
-      right: 20px;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       background: #1f1f1f;
       border: 1px solid #00ffe7;
       color: #fff;
-      padding: 20px;
+      padding: 25px;
       border-radius: 12px;
       z-index: 999;
-      box-shadow: 0 0 15px #00ffe7;
-      max-width: 300px;
-      animation: slideIn 0.4s ease-out;
+      box-shadow: 0 0 20px #00ffe7;
+      max-width: 320px;
+      text-align: center;
+      animation: fadeIn 0.4s ease-out;
     }
 
-    @keyframes slideIn {
-      from { transform: translateX(100px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -60%); }
+      to { opacity: 1; transform: translate(-50%, -50%); }
     }
 
     .popup h3 {
@@ -160,34 +174,38 @@
       color: #00ffe7;
     }
 
+    .popup p {
+      margin: 5px 0 15px;
+    }
+
     .popup a {
       display: inline-block;
-      margin-top: 10px;
+      margin: 5px;
       padding: 8px 14px;
       background: #00ffe7;
       color: #000;
       border-radius: 8px;
       font-weight: bold;
       text-decoration: none;
-      margin-right: 5px;
+    }
+
+    .popup .icons {
+      font-size: 20px;
+      margin-bottom: 10px;
     }
 
     .close-popup {
       position: absolute;
-      top: 8px;
-      right: 12px;
+      top: 6px;
+      right: 10px;
       background: transparent;
       border: none;
-      font-size: 16px;
-      color: #fff;
+      font-size: 20px;
+      color: #00ffe7;
       cursor: pointer;
     }
 
     @media(max-width: 600px) {
-      .match-card {
-        width: 95%;
-      }
-
       .team img {
         width: 50px;
         height: 50px;
@@ -196,10 +214,14 @@
       .team-name {
         font-size: 12px;
       }
+
+      .popup {
+        width: 85%;
+      }
     }
   </style>
 </head>
-<body>
+<body id="mainBody">
 
   <header>FlickStream - Live Sports</header>
 
@@ -208,9 +230,12 @@
   </div>
 
   <div class="popup" id="popup">
-    <button class="close-popup" onclick="document.getElementById('popup').style.display='none'">×</button>
-    <h3>Get Live Updates</h3>
-    <p>Join our Telegram or WhatsApp group for match links & updates!</p>
+    <button class="close-popup" onclick="closePopup()">×</button>
+    <div class="icons">
+      <i class="fab fa-telegram-plane"></i> <i class="fab fa-whatsapp"></i>
+    </div>
+    <h3>Join Our Community</h3>
+    <p>Get updates, links & more</p>
     <a href="https://t.me/YourTelegramChannel" target="_blank">Telegram</a>
     <a href="https://chat.whatsapp.com/YourWhatsAppGroup" target="_blank">WhatsApp</a>
   </div>
@@ -223,6 +248,16 @@
   </div>
 
   <script>
+    // Blur background on popup
+    window.onload = () => {
+      document.getElementById('mainBody').classList.add('blur');
+    };
+
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+      document.getElementById('mainBody').classList.remove('blur');
+    }
+
     fetch('streams.json')
       .then(res => res.json())
       .then(data => {
@@ -267,7 +302,7 @@
           } else {
             const msg = document.createElement('div');
             msg.className = 'upcoming-message';
-            msg.textContent = 'Stay tuned! Match will be live soon.';
+            msg.textContent = 'Match is starting soon. Stay tuned!';
             card.appendChild(msg);
           }
 
