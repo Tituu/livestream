@@ -20,69 +20,87 @@
       padding: 1.5rem;
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
-      position: relative;
-      z-index: 1;
+      gap: 2rem;
     }
 
     .card {
-      background: #1a1a1a;
-      border-radius: 1rem;
-      padding: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      background: #141414;
+      border-radius: 1.2rem;
+      padding: 1rem 1.5rem;
+      position: relative;
       box-shadow: 0 0 12px rgba(0, 255, 255, 0.1);
-      flex-wrap: wrap;
-    }
-
-    .card img {
-      height: 55px;
-      width: 55px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    .team-info {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      flex: 1;
+      gap: 1rem;
     }
 
-    .badge {
-      padding: 6px 14px;
+    .card .status-badge {
+      position: absolute;
+      top: 12px;
+      right: 15px;
+      padding: 5px 14px;
       border-radius: 20px;
       font-size: 0.75rem;
       font-weight: bold;
       animation: glow 2s infinite ease-in-out;
-      margin-bottom: 4px;
     }
 
-    .badge.live {
-      background: rgba(255, 0, 0, 0.15);
+    .live {
+      background: rgba(255, 0, 0, 0.1);
       color: #ff3d3d;
       box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
     }
 
-    .badge.upcoming {
-      background: rgba(0, 123, 255, 0.15);
+    .upcoming {
+      background: rgba(0, 123, 255, 0.1);
       color: #00bfff;
       box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
+    }
+
+    .teams {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      text-align: center;
+      gap: 1rem;
+    }
+
+    .team {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .team img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 6px;
+    }
+
+    .vs {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #999;
+    }
+
+    .action {
+      text-align: center;
+      margin-top: 1rem;
     }
 
     .watch-btn {
       background: linear-gradient(135deg, #00ffe7, #00aaff);
       color: #000;
-      padding: 10px 18px;
-      border-radius: 25px;
-      border: none;
+      padding: 12px 26px;
+      border-radius: 30px;
       font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      font-size: 0.9rem;
+      font-size: 1rem;
       text-decoration: none;
+      display: inline-block;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: pulse 2s infinite;
     }
 
     .watch-btn:hover {
@@ -90,68 +108,10 @@
       box-shadow: 0 0 15px #00ffe7;
     }
 
-    .popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #1f1f1f;
-      border: 1px solid #00ffe7;
-      padding: 20px;
-      width: 90%;
-      max-width: 300px;
-      border-radius: 12px;
-      text-align: center;
-      box-shadow: 0 0 20px #00ffe7;
-      z-index: 100;
-    }
-
-    .popup-link {
-      display: block;
+    .upcoming-msg {
+      color: #ccc;
+      font-size: 0.95rem;
       margin-top: 10px;
-      padding: 10px 14px;
-      background: #00ffe7;
-      color: #000;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: 600;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 6px;
-      right: 10px;
-      background: transparent;
-      border: none;
-      color: #fff;
-      font-size: 22px;
-      cursor: pointer;
-    }
-
-    .blur-bg {
-      position: fixed;
-      inset: 0;
-      backdrop-filter: blur(6px);
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 50;
-    }
-
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background: #121212;
-      margin-top: 2rem;
-    }
-
-    .footer-btn {
-      display: inline-block;
-      padding: 12px 20px;
-      background: #25D366;
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 8px;
-      box-shadow: 0 0 12px #25D366;
     }
 
     @keyframes glow {
@@ -160,85 +120,64 @@
       100% { box-shadow: 0 0 5px rgba(255,255,255,0.3); }
     }
 
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.07); }
+    }
+
     @media (max-width: 768px) {
-      .card {
+      .teams {
         flex-direction: column;
-        align-items: center;
-        text-align: center;
       }
     }
   </style>
 </head>
 <body>
 
-  <div id="blur-background" class="blur-bg"></div>
-
-  <div id="popup" class="popup">
-    <button class="close-btn" onclick="closePopup()">×</button>
-    <h2><i class="fab fa-telegram"></i> Join Our Channels</h2>
-    <p>Get instant match updates & live links</p>
-    <a href="https://t.me/YourTelegramChannel" target="_blank" class="popup-link">
-      <i class="fab fa-telegram"></i> Telegram
-    </a>
-    <a href="https://chat.whatsapp.com/YourWhatsAppGroup" target="_blank" class="popup-link">
-      <i class="fab fa-whatsapp"></i> WhatsApp
-    </a>
-  </div>
-
-  <main id="matches-container" class="container"></main>
-
-  <footer>
-    <a href="https://chat.whatsapp.com/YourWhatsAppGroup" target="_blank" class="footer-btn">
-      <i class="fab fa-whatsapp"></i> Join WhatsApp Group
-    </a>
-  </footer>
+  <main class="container" id="matches-container"></main>
 
   <script>
     fetch("streams.json")
-      .then((res) => res.json())
-      .then((data) => {
+      .then(res => res.json())
+      .then(data => {
         const container = document.getElementById("matches-container");
 
-        data.forEach((match) => {
+        data.forEach(match => {
           const card = document.createElement("div");
           card.className = "card";
 
+          const status = match.status.toLowerCase();
+          const statusBadge = `<div class="status-badge ${status}">${match.status}</div>`;
+
           const team1 = `
-            <div class="team-info">
+            <div class="team">
               <img src="${match.team1.logo}" alt="${match.team1.name}" />
               <div>${match.team1.name}</div>
             </div>`;
 
           const team2 = `
-            <div class="team-info">
+            <div class="team">
               <img src="${match.team2.logo}" alt="${match.team2.name}" />
               <div>${match.team2.name}</div>
             </div>`;
 
-          const badge = `<span class="badge ${match.status.toLowerCase()}">${match.status}</span>`;
-
-          const action = match.status.toLowerCase() === "live"
+          const centerAction = status === 'live'
             ? `<a href="stream.html?id=${match.id}" class="watch-btn">Watch Now</a>`
-            : `<span style="color: #ccc; font-size: 0.9rem;">Match is upcoming</span>`;
+            : `<div class="upcoming-msg">Match is upcoming. Stay tuned!</div>`;
 
           card.innerHTML = `
-            ${team1}
-            <div style="text-align: center;">
-              ${badge}
-              <div style="margin: 6px 0;">VS</div>
+            ${statusBadge}
+            <div class="teams">
+              ${team1}
+              <div class="vs">VS</div>
+              ${team2}
             </div>
-            ${team2}
-            <div style="text-align: center; margin-top: 10px;">${action}</div>
+            <div class="action">${centerAction}</div>
           `;
 
           container.appendChild(card);
         });
       });
-
-    function closePopup() {
-      document.getElementById("popup").style.display = "none";
-      document.getElementById("blur-background").style.display = "none";
-    }
   </script>
 </body>
 </html>
