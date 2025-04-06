@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Watch Live</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(120deg, #f0f0f0, #fff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    #player-container {
+      width: 90%;
+      max-width: 900px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.2);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+    video {
+      width: 100%;
+      height: auto;
+      background: #000;
+      outline: none;
+    }
+    #player-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, rgba(33,150,243,0.2), rgba(255,193,7,0.2));
+      z-index: -1;
+      animation: glow 3s ease infinite;
+    }
+    @keyframes glow {
+      0% { filter: blur(5px); opacity: 0.5; }
+      50% { filter: blur(10px); opacity: 1; }
+      100% { filter: blur(5px); opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+  <div id="player-container">
+    <video id="live-player" controls autoplay></video>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const matchId = urlParams.get('id');
+
+    fetch('streams.json')
+      .then(res => res.json())
+      .then(data => {
+        const match = data.find(m => m.id === matchId);
+        if (match) {
+          const player = document.getElementById('live-player');
+          player.src = match.link;
+        }
+      });
+  </script>
+</body>
+</html>

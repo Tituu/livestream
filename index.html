@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Live Matches</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fefefe;
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
+    header {
+      background: #ffffff;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    #matches-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 20px;
+      justify-content: center;
+    }
+    .match-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      text-align: center;
+      width: 250px;
+      position: relative;
+    }
+    .team {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .team img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+    .vs {
+      font-size: 1.2em;
+      margin: 10px 0;
+      color: #444;
+    }
+    .watch-btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 8px 16px;
+      background: #2196f3;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+    .badge {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      padding: 6px 10px;
+      font-size: 0.8em;
+      font-weight: bold;
+      color: white;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
+    .live {
+      background: #e53935;
+      box-shadow: 0 0 8px rgba(229, 57, 53, 0.6);
+    }
+    .upcoming {
+      background: #43a047;
+      box-shadow: 0 0 8px rgba(67, 160, 71, 0.6);
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #f0f0f0;
+      font-size: 0.9em;
+    }
+    .popup {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ffeb3b;
+      color: #000;
+      padding: 12px;
+      border-radius: 6px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Live & Upcoming Matches</h1>
+  </header>
+  <main id="matches-container"></main>
+
+  <footer>
+    <p>&copy; 2025 | Join us on <a href="#">Telegram</a> or <a href="#">WhatsApp</a></p>
+  </footer>
+
+  <div class="popup">
+    Join our <a href="#">Telegram</a> or <a href="#">WhatsApp</a> for updates!
+  </div>
+
+  <script>
+    fetch('streams.json')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('matches-container');
+        data.forEach(match => {
+          const badgeClass = match.status === 'live' ? 'live' : 'upcoming';
+          const badgeText = match.status === 'live' ? 'LIVE' : 'UPCOMING';
+          
+          const card = document.createElement('div');
+          card.className = 'match-card';
+          card.innerHTML = `
+            <div class="badge ${badgeClass}">${badgeText}</div>
+            <div class="team">
+              <img src="${match.logo1}" alt="${match.team1}"><span>${match.team1}</span>
+            </div>
+            <div class="vs">VS</div>
+            <div class="team">
+              <img src="${match.logo2}" alt="${match.team2}"><span>${match.team2}</span>
+            </div>
+            <a href="stream.html?id=${match.id}" class="watch-btn">Watch Live</a>
+          `;
+          container.appendChild(card);
+        });
+      });
+  </script>
+</body>
+</html>
