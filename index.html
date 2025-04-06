@@ -11,114 +11,97 @@
       font-family: 'Segoe UI', sans-serif;
       background: #0f1115;
       color: #fff;
-      padding: 40px 20px 100px;
     }
-    h1 {
+    header {
       text-align: center;
-      margin-bottom: 40px;
-      font-size: 2rem;
-      color: #00ffc8;
-      text-shadow: 0 0 10px rgba(0, 255, 200, 0.4);
+      padding: 20px;
+      background: #11141a;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
-    .match-container {
+    header h1 {
+      color: #00ffc8;
+      font-size: 2rem;
+      text-shadow: 0 0 10px rgba(0, 255, 200, 0.5);
+    }
+    .matches-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-      max-width: 1000px;
-      margin: auto;
+      gap: 20px;
+      padding: 30px 20px;
     }
     .match-card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(10px);
+      background: #1a1d24;
       border-radius: 16px;
       padding: 20px;
       text-align: center;
-      box-shadow: 0 0 12px rgba(0,255,255,0.05);
+      box-shadow: 0 0 10px rgba(0,255,200,0.1);
       transition: 0.3s ease;
     }
     .match-card:hover {
-      box-shadow: 0 0 20px rgba(0,255,200,0.2);
-      transform: translateY(-3px);
+      box-shadow: 0 0 15px rgba(0,255,200,0.3);
+      transform: scale(1.02);
     }
     .teams {
       display: flex;
-      justify-content: center;
+      justify-content: space-around;
       align-items: center;
-      gap: 30px;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
     }
     .team {
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 80px;
     }
     .team img {
       width: 60px;
       height: 60px;
       border-radius: 50%;
-      box-shadow: 0 0 6px rgba(255,255,255,0.1);
+      box-shadow: 0 0 10px rgba(0,255,200,0.2);
       margin-bottom: 8px;
     }
-    .team-name {
-      font-size: 14px;
-      text-align: center;
-    }
-    .vs {
-      font-size: 18px;
+    .team span {
       font-weight: bold;
-      color: #bbb;
+      font-size: 14px;
     }
     .status {
-      margin-top: 12px;
-      padding: 6px 14px;
-      font-size: 13px;
+      margin: 10px 0;
+      font-size: 14px;
+      padding: 5px 10px;
+      display: inline-block;
       border-radius: 20px;
-      text-transform: uppercase;
-      font-weight: bold;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
     }
-    .status.live {
-      background: #ff2d55;
-      color: white;
+    .live {
+      background-color: #ff4b5c;
+      color: #fff;
     }
-    .status.upcoming {
-      background: #333;
+    .upcoming {
+      background-color: #444;
       color: #ccc;
     }
     .watch-btn {
-      margin-top: 15px;
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
       background: #00ffc8;
       color: #000;
       font-weight: bold;
-      border: none;
-      padding: 10px 18px;
+      text-decoration: none;
       border-radius: 30px;
-      cursor: pointer;
-      transition: 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      transition: background 0.3s ease;
     }
     .watch-btn:hover {
-      background: #00d4aa;
+      background: #00cfa5;
     }
     footer {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
       background: #11141a;
-      padding: 15px 20px;
+      padding: 20px;
       text-align: center;
       box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
     }
     .footer-text {
       color: #aaa;
       font-size: 14px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
     .whatsapp-btn {
       background-color: #25D366;
@@ -141,11 +124,14 @@
   </style>
 </head>
 <body>
-  <h1><i class="fa-solid fa-tv"></i> Live Matches</h1>
-  <div class="match-container" id="matches">Loading...</div>
+  <header>
+    <h1><i class="fa-solid fa-tv"></i> Live Streaming Matches</h1>
+  </header>
+
+  <main class="matches-container" id="matches"></main>
 
   <footer>
-    <div class="footer-text">Stay Updated with the Latest Matches</div>
+    <div class="footer-text">Stay connected with live sports updates</div>
     <a href="https://chat.whatsapp.com/DTd24MLztOa2I47Cymo1F6" target="_blank" class="whatsapp-btn">
       <i class="fab fa-whatsapp"></i> Join WhatsApp Group
     </a>
@@ -155,31 +141,33 @@
     fetch("https://raw.githubusercontent.com/Tituu/livestream/main/matches.json")
       .then(res => res.json())
       .then(data => {
-        const container = document.getElementById("matches");
-        container.innerHTML = "";
+        const matchesContainer = document.getElementById("matches");
         data.matches.forEach(match => {
-          const div = document.createElement("div");
-          div.className = "match-card";
-          div.innerHTML = `
+          const card = document.createElement("div");
+          card.className = "match-card";
+
+          const isLive = match.status.toLowerCase() === "live";
+          const statusClass = isLive ? "live" : "upcoming";
+
+          card.innerHTML = `
             <div class="teams">
               <div class="team">
-                <img src="${match.team1.logo}" alt="${match.team1.name}">
-                <div class="team-name">${match.team1.name}</div>
+                <img src="${match.team1.logo}" alt="${match.team1.name}" />
+                <span>${match.team1.name}</span>
               </div>
-              <div class="vs">vs</div>
               <div class="team">
-                <img src="${match.team2.logo}" alt="${match.team2.name}">
-                <div class="team-name">${match.team2.name}</div>
+                <img src="${match.team2.logo}" alt="${match.team2.name}" />
+                <span>${match.team2.name}</span>
               </div>
             </div>
-            <div class="status ${match.status.toLowerCase()}">
-              <i class="fa-solid ${match.status.toLowerCase() === 'live' ? 'fa-circle-dot' : 'fa-clock'}"></i>
-              ${match.status}
-            </div>
-            ${match.status.toLowerCase() === "live" ? `<a href="watch.html?match=${encodeURIComponent(match.id)}"><button class="watch-btn"><i class="fa-solid fa-play"></i> Watch</button></a>` : ''}
+            <div class="status ${statusClass}">${match.status}</div>
+            ${isLive ? `<a href="watch.html?match=${match.id}" class="watch-btn"><i class="fa-solid fa-play"></i> Watch Now</a>` : ''}
           `;
-          container.appendChild(div);
+          matchesContainer.appendChild(card);
         });
+      })
+      .catch(err => {
+        document.getElementById("matches").innerHTML = "<p style='text-align:center;'>Failed to load matches.</p>";
       });
   </script>
 </body>
