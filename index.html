@@ -1,175 +1,187 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Live Matches - StreamZone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Live Matches | StreamZone</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #0e0f13;
+      background: #0e0e0e;
       color: #fff;
     }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
+
+    header {
       padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      background: linear-gradient(to right, #111, #1f1f1f);
+      color: #0ff;
+      box-shadow: 0 0 8px rgba(0, 255, 255, 0.2);
     }
-    .match-grid {
+
+    .matches {
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
       justify-content: center;
+      padding: 20px;
+      gap: 20px;
     }
+
     .match-card {
-      background: #1c1e25;
+      background: #161616;
       border-radius: 16px;
       padding: 20px;
       width: 300px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      box-shadow: 0 0 20px rgba(0, 255, 200, 0.05);
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.05);
+      transition: transform 0.3s;
     }
+
+    .match-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+    }
+
     .teams {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      width: 100%;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 10px;
     }
-    .logo-frame {
+
+    .team {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .team-logo {
+      width: 80px;
+      height: 80px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: transparent;
-      box-shadow: none;
     }
-    .logo-frame img {
+
+    .team-logo img {
       max-width: 80px;
       height: auto;
       object-fit: contain;
-      border: none;
-      background: none;
-      border-radius: 0;
     }
+
     .team-name {
-      margin-top: 10px;
-      text-align: center;
-      font-weight: bold;
+      margin-top: 8px;
       font-size: 14px;
+      font-weight: 600;
+      text-align: center;
     }
+
     .vs-text {
-      margin: 0 10px;
-      font-size: 20px;
-      color: #888;
+      font-size: 18px;
+      color: #999;
+      font-weight: 500;
     }
+
     .status {
-      margin: 15px 0;
-    }
-    .badge {
       display: inline-block;
-      padding: 6px 12px;
+      padding: 4px 10px;
+      border-radius: 12px;
       font-size: 13px;
-      border-radius: 50px;
-      background: linear-gradient(to right, #6a11cb, #2575fc);
-      color: #fff;
-      text-transform: uppercase;
       font-weight: bold;
+      margin-top: 10px;
     }
-    .btn-watch {
-      background: linear-gradient(to right, #00ffc8, #007f73);
-      border: none;
+
+    .live {
+      background: #ff0040;
+      color: #fff;
+    }
+
+    .upcoming {
+      background: #444;
+      color: #ddd;
+    }
+
+    .watch-btn {
+      display: inline-block;
+      margin-top: 15px;
       padding: 10px 18px;
-      border-radius: 50px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #00ffc8, #006cff);
       color: #000;
       font-weight: bold;
-      margin-top: 10px;
-      cursor: pointer;
       text-decoration: none;
-      transition: transform 0.3s ease;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
     }
-    .btn-watch:hover {
-      transform: scale(1.05);
-    }
+
     footer {
-      background: #18191f;
       text-align: center;
-      padding: 30px 10px;
-      margin-top: 60px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      background: #111;
+      margin-top: 40px;
+      color: #888;
     }
-    .footer-text {
-      color: #aaa;
-      font-size: 14px;
-      margin-top: 10px;
-    }
+
     .whatsapp-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 15px;
       background: #25D366;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 30px;
-      font-size: 16px;
-      margin-top: 15px;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
+      color: #fff;
       text-decoration: none;
+      border-radius: 30px;
+      font-weight: bold;
+      box-shadow: 0 0 10px rgba(37, 211, 102, 0.5);
     }
+
     .whatsapp-btn i {
-      font-size: 18px;
+      margin-right: 6px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Live & Upcoming Matches</h1>
-    <div id="matchContainer" class="match-grid"></div>
-  </div>  <footer>
-    <a href="https://chat.whatsapp.com/DTd24MLztOa2I47Cymo1F6" target="_blank" class="whatsapp-btn">
-      <i class="fab fa-whatsapp"></i> Join WhatsApp Group
+
+  <header><i class="fas fa-tv"></i> Live Matches</header>
+
+  <div class="matches" id="matches"></div>
+
+  <footer>
+    Join our WhatsApp Group for updates<br>
+    <a class="whatsapp-btn" href="https://chat.whatsapp.com/DTd24MLztOa2I47Cymo1F6" target="_blank">
+      <i class="fab fa-whatsapp"></i> Join Now
     </a>
-    <div class="footer-text">&copy; 2025 StreamZone. All rights reserved.</div>
-  </footer>  <script>
+  </footer>
+
+  <script>
     fetch('https://raw.githubusercontent.com/Tituu/livestream/main/matches.json')
       .then(res => res.json())
       .then(data => {
-        const container = document.getElementById('matchContainer');
+        const container = document.getElementById('matches');
         data.matches.forEach(match => {
           const card = document.createElement('div');
           card.className = 'match-card';
-
-          const teamLogos = `
+          card.innerHTML = `
             <div class="teams">
-              <div>
-                <div class="logo-frame">
-                  <img src="${match.team1.logo}" alt="${match.team1.name}" />
-                </div>
+              <div class="team">
+                <div class="team-logo"><img src="${match.team1.logo}" alt="${match.team1.name}"></div>
                 <div class="team-name">${match.team1.name}</div>
               </div>
               <div class="vs-text">vs</div>
-              <div>
-                <div class="logo-frame">
-                  <img src="${match.team2.logo}" alt="${match.team2.name}" />
-                </div>
+              <div class="team">
+                <div class="team-logo"><img src="${match.team2.logo}" alt="${match.team2.name}"></div>
                 <div class="team-name">${match.team2.name}</div>
               </div>
             </div>
+            <div class="status ${match.status.toLowerCase()}">${match.status === 'Live' ? 'LIVE' : 'UPCOMING'}</div>
+            ${match.status === 'Live' ? `<a class="watch-btn" href="watch.html?id=${match.id}"><i class="fas fa-play-circle"></i> Watch Now</a>` : ''}
           `;
-
-          const badge = `<div class="status"><span class="badge">${match.status}</span></div>`;
-          let button = '';
-
-          if (match.status.toLowerCase() === 'live') {
-            button = `<a href="watch.html?match=${match.id}" class="btn-watch"><i class="fas fa-play"></i> Watch Now</a>`;
-          } else {
-            button = `<div style="margin-top: 10px; font-size: 13px; color: #999;"><i class="fas fa-clock"></i> Starts soon</div>`;
-          }
-
-          card.innerHTML = teamLogos + badge + button;
           container.appendChild(card);
         });
       });
-  </script></body>
+  </script>
+
+</body>
 </html>
