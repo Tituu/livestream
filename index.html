@@ -5,71 +5,87 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Live Matches</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #0b0b0b;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(145deg, #0f0f0f, #1a1a1a);
       color: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
+      padding: 30px 20px;
+      min-height: 100vh;
     }
 
     h1 {
-      color: #00e5ff;
-      text-shadow: 0 0 10px #00bcd4;
-      margin-bottom: 30px;
+      color: #00ffc8;
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      text-shadow: 0 0 15px #00ffc8;
     }
 
     .card-container {
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 25px;
       justify-content: center;
       width: 100%;
-      max-width: 1200px;
+      max-width: 1300px;
     }
 
     .card {
-      background: #111;
-      border-radius: 15px;
-      padding: 20px;
-      width: 250px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 25px;
+      width: 260px;
       text-align: center;
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
-      transition: transform 0.3s ease;
+      border: 1px solid rgba(0, 255, 200, 0.2);
+      box-shadow: 0 0 20px rgba(0, 255, 200, 0.1);
       position: relative;
+      transition: all 0.3s ease;
     }
 
     .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 30px rgba(0, 229, 255, 0.5);
+      transform: scale(1.03);
+      box-shadow: 0 0 30px rgba(0, 255, 200, 0.5);
     }
 
     .badge {
       position: absolute;
       top: 15px;
       right: 15px;
-      padding: 6px 12px;
-      border-radius: 12px;
+      padding: 6px 14px;
+      border-radius: 20px;
       font-size: 0.75em;
       color: #fff;
-      background: #ff0055;
-      box-shadow: 0 0 10px rgba(255, 0, 85, 0.7);
+      font-weight: 600;
+      letter-spacing: 1px;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+    }
+
+    .badge.live {
+      background: #ff004c;
+      box-shadow: 0 0 10px #ff004c;
     }
 
     .badge.upcoming {
-      background: #ffc107;
-      box-shadow: 0 0 10px rgba(255, 193, 7, 0.6);
+      background: #ffaa00;
+      box-shadow: 0 0 10px #ffaa00;
     }
 
     .team-logos {
       display: flex;
       justify-content: space-around;
       align-items: center;
-      margin-bottom: 15px;
+      margin: 20px 0;
     }
 
     .team {
@@ -79,40 +95,41 @@
     }
 
     .team img {
-      width: 60px;
-      height: 60px;
+      width: 65px;
+      height: 65px;
       border-radius: 50%;
-      margin-bottom: 5px;
-      border: 2px solid #00e5ff;
+      border: 2px solid #00ffc8;
+      margin-bottom: 6px;
     }
 
     .team span {
-      font-size: 0.9em;
-      color: #ccc;
+      font-size: 0.95em;
+      color: #ddd;
     }
 
     .watch-btn {
-      margin-top: 10px;
-      background: #00e5ff;
+      background: #00ffc8;
       color: #000;
+      padding: 10px 25px;
       border: none;
-      padding: 10px 20px;
       border-radius: 25px;
-      font-weight: bold;
+      font-weight: 600;
       text-decoration: none;
       transition: 0.3s ease;
       display: inline-block;
+      margin-top: 15px;
     }
 
     .watch-btn:hover {
       background: #fff;
-      color: #00e5ff;
+      color: #00ffc8;
+      box-shadow: 0 0 12px #00ffc8;
     }
 
     footer {
-      margin-top: 50px;
-      padding: 20px;
-      border-top: 1px solid #222;
+      margin-top: 60px;
+      padding: 25px;
+      border-top: 1px solid #2a2a2a;
       width: 100%;
       text-align: center;
       font-size: 0.9em;
@@ -120,16 +137,16 @@
     }
 
     footer a {
-      color: #00e5ff;
+      color: #00ffc8;
       text-decoration: none;
-      margin: 0 10px;
+      margin: 0 12px;
     }
 
     footer a:hover {
       text-decoration: underline;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
       .card {
         width: 90%;
       }
@@ -137,7 +154,8 @@
   </style>
 </head>
 <body>
-  <h1><i class="fa-solid fa-tv"></i> Live & Upcoming Matches</h1>
+
+  <h1><i class="fa-solid fa-bolt"></i> Live & Upcoming Matches</h1>
 
   <div class="card-container" id="matchCards"></div>
 
@@ -146,7 +164,7 @@
       <a href="#"><i class="fab fa-telegram"></i> Telegram</a> |
       <a href="#"><i class="fab fa-whatsapp"></i> WhatsApp</a>
     </p>
-    <p>&copy; 2025 Cloudflare StreamZone</p>
+    <p>&copy; 2025 StreamZone | Powered by Cloudflare Pages</p>
   </footer>
 
   <script>
@@ -176,9 +194,13 @@
             </div>
           `;
 
-          const watchBtn = `<a href="stream.html?id=${match.id}" class="watch-btn"><i class="fa-solid fa-play"></i> Watch</a>`;
+          card.innerHTML += logos;
 
-          card.innerHTML += logos + watchBtn;
+          if (match.status === "live") {
+            const watchBtn = `<a href="stream.html?id=${match.id}" class="watch-btn"><i class="fa-solid fa-play"></i> Watch</a>`;
+            card.innerHTML += watchBtn;
+          }
+
           container.appendChild(card);
         });
       });
