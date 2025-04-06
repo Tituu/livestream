@@ -1,224 +1,265 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Live Matches</title>
-  <link rel="icon" href="favicon.png" type="image/png" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <title>Live Matches - FlickStream</title>
+  <link rel="icon" href="logo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a2c2f5cf1b.js" crossorigin="anonymous"></script>
   <style>
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: #0a0a0a;
+      background: #0e0e0e;
       color: #fff;
-      padding: 20px;
+      padding-bottom: 80px;
     }
 
-    h1 {
+    header {
       text-align: center;
-      margin-bottom: 30px;
-      color: #00ffd9;
-      text-shadow: 0 0 10px #00ffd9;
-      font-size: 2.2rem;
+      padding: 30px 0 10px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 28px;
+      color: #00ffe7;
+      text-shadow: 0 0 10px #00ffe7;
     }
 
-    .card-container {
+    .matches-container {
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 20px;
-      max-width: 700px;
-      margin: 0 auto;
+      margin: 20px;
     }
 
-    .card {
-      background: #151515;
-      border: 1px solid #222;
-      border-radius: 16px;
+    .match-card {
+      background: #1c1c1c;
+      border-radius: 15px;
       padding: 20px;
-      box-shadow: 0 0 10px rgba(0,255,217,0.1);
+      width: 95%;
+      max-width: 600px;
+      box-shadow: 0 0 15px rgba(0,255,255,0.2);
       position: relative;
-      transition: 0.3s;
+      transition: transform 0.3s;
     }
 
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 15px rgba(0,255,217,0.3);
-    }
-
-    .badge {
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 0.75em;
-      font-weight: 600;
-      color: #fff;
-      text-shadow: 0 0 5px rgba(0,0,0,0.5);
-      box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
-    }
-
-    .badge.live {
-      background: #ff1e56;
-      box-shadow: 0 0 10px #ff1e56;
-    }
-
-    .badge.upcoming {
-      background: #ffaa00;
-      box-shadow: 0 0 10px #ffaa00;
+    .match-card:hover {
+      transform: scale(1.02);
     }
 
     .teams {
       display: flex;
-      justify-content: space-around;
       align-items: center;
-      flex-wrap: wrap;
-      margin-top: 20px;
+      justify-content: space-around;
+      text-align: center;
     }
 
     .team {
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 100px;
+      gap: 5px;
     }
 
     .team img {
-      width: 70px;
-      height: 70px;
-      object-fit: cover;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
-      border: 2px solid #00ffd9;
-      margin-bottom: 8px;
+      border: 2px solid #00ffe7;
+      background: #000;
+      box-shadow: 0 0 10px #00ffe7;
     }
 
     .team-name {
-      text-align: center;
-      font-size: 0.95rem;
-      color: #eee;
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 5px;
+    }
+
+    .badge {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: #00ffe7;
+      color: #000;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      box-shadow: 0 0 10px #00ffe7;
     }
 
     .watch-btn {
-      display: block;
-      margin: 25px auto 0;
+      margin-top: 20px;
+      display: inline-block;
       padding: 10px 20px;
-      background: #00ffd9;
+      background: #00ffe7;
       color: #000;
-      border: none;
-      border-radius: 30px;
-      font-weight: 600;
+      border-radius: 8px;
+      font-weight: bold;
       text-decoration: none;
-      transition: 0.3s;
+      box-shadow: 0 0 10px #00ffe7;
     }
 
-    .watch-btn:hover {
-      background: #fff;
-      color: #00ffd9;
-      box-shadow: 0 0 10px #00ffd9;
-    }
-
-    footer {
-      margin-top: 60px;
-      padding: 30px 15px;
-      border-top: 1px solid #333;
+    .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #111;
       text-align: center;
-      color: #aaa;
-      background: linear-gradient(90deg, #0a0a0a, #111);
-      font-size: 0.9rem;
-      animation: fadeIn 1s ease-in-out;
+      padding: 15px 10px;
+      color: #ccc;
+      box-shadow: 0 -2px 10px rgba(0, 255, 255, 0.1);
+      z-index: 10;
     }
 
-    footer i {
-      color: #00ffd9;
-      margin: 0 8px;
-    }
-
-    footer a {
-      color: #00ffd9;
+    .footer a {
+      color: #00ffe7;
       text-decoration: none;
+      font-weight: bold;
+      margin-left: 10px;
     }
 
-    footer a:hover {
-      text-decoration: underline;
+    .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1f1f1f;
+      border: 1px solid #00ffe7;
+      color: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      z-index: 999;
+      box-shadow: 0 0 15px #00ffe7;
+      max-width: 300px;
+      animation: slideIn 0.4s ease-out;
     }
 
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
+    @keyframes slideIn {
+      from { transform: translateX(100px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
     }
 
-    @media (max-width: 500px) {
-      .team {
-        width: 45%;
-        margin: 10px 0;
+    .popup h3 {
+      margin: 0 0 10px;
+      color: #00ffe7;
+    }
+
+    .popup a {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 14px;
+      background: #00ffe7;
+      color: #000;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      margin-right: 5px;
+    }
+
+    .close-popup {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      background: transparent;
+      border: none;
+      font-size: 16px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    @media(max-width: 600px) {
+      .match-card {
+        width: 95%;
       }
 
       .team img {
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
+      }
+
+      .team-name {
+        font-size: 12px;
       }
     }
   </style>
 </head>
 <body>
 
-<h1><i class="fa-solid fa-trophy"></i> Live & Upcoming Matches</h1>
+  <header>FlickStream - Live Sports</header>
 
-<div class="card-container" id="matchList"></div>
+  <div class="matches-container" id="matchesContainer">
+    <!-- Matches will be inserted here -->
+  </div>
 
-<footer>
-  <p>
-    Follow us on:
-    <a href="#"><i class="fab fa-telegram-plane"></i> Telegram</a> |
-    <a href="#"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-  </p>
-  <p>&copy; 2025 StreamChamp. Built with ❤️</p>
-</footer>
+  <div class="popup" id="popup">
+    <button class="close-popup" onclick="document.getElementById('popup').style.display='none'">×</button>
+    <h3>Get Live Updates</h3>
+    <p>Join our Telegram or WhatsApp group for match links & updates!</p>
+    <a href="https://t.me/YourTelegramChannel" target="_blank">Telegram</a>
+    <a href="https://chat.whatsapp.com/YourWhatsAppGroup" target="_blank">WhatsApp</a>
+  </div>
 
-<script>
-fetch('streams.json')
-  .then(res => res.json())
-  .then(data => {
-    const container = document.getElementById("matchList");
-    data.forEach(match => {
-      const card = document.createElement("div");
-      card.className = "card";
+  <div class="footer">
+    Powered by FlickUniverse —
+    <a href="https://chat.whatsapp.com/YourWhatsAppGroup" target="_blank">
+      <i class="fab fa-whatsapp"></i> Join WhatsApp
+    </a>
+  </div>
 
-      const badge = document.createElement("div");
-      badge.className = "badge " + (match.status === "live" ? "live" : "upcoming");
-      badge.textContent = match.status.toUpperCase();
-      card.appendChild(badge);
+  <script>
+    fetch('streams.json')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('matchesContainer');
+        if (!data.length) {
+          container.innerHTML = '<p>No matches found.</p>';
+          return;
+        }
 
-      const teams = document.createElement("div");
-      teams.className = "teams";
+        data.forEach(match => {
+          const card = document.createElement('div');
+          card.className = 'match-card';
 
-      const team1 = `
-        <div class="team">
-          <img src="${match.logo1}" alt="${match.team1}">
-          <div class="team-name">${match.team1}</div>
-        </div>`;
-      const team2 = `
-        <div class="team">
-          <img src="${match.logo2}" alt="${match.team2}">
-          <div class="team-name">${match.team2}</div>
-        </div>`;
-      teams.innerHTML = team1 + team2;
-      card.appendChild(teams);
+          const badge = document.createElement('div');
+          badge.className = 'badge';
+          badge.textContent = match.status === 'live' ? 'LIVE' : 'Upcoming';
+          card.appendChild(badge);
 
-      if (match.status === "live") {
-        const btn = document.createElement("a");
-        btn.href = `stream.html?id=${match.id}`;
-        btn.className = "watch-btn";
-        btn.innerHTML = '<i class="fa-solid fa-play"></i> Watch Now';
-        card.appendChild(btn);
-      }
+          const teams = document.createElement('div');
+          teams.className = 'teams';
 
-      container.appendChild(card);
-    });
-  });
-</script>
+          const team1 = document.createElement('div');
+          team1.className = 'team';
+          team1.innerHTML = `<img src="${match.logo1}" alt="Team 1 Logo">
+                             <div class="team-name">${match.team1}</div>`;
+
+          const team2 = document.createElement('div');
+          team2.className = 'team';
+          team2.innerHTML = `<img src="${match.logo2}" alt="Team 2 Logo">
+                             <div class="team-name">${match.team2}</div>`;
+
+          teams.appendChild(team1);
+          teams.appendChild(team2);
+          card.appendChild(teams);
+
+          if (match.status === 'live') {
+            const watchBtn = document.createElement('a');
+            watchBtn.className = 'watch-btn';
+            watchBtn.href = `stream.html?id=${match.id}`;
+            watchBtn.textContent = 'Watch Now';
+            card.appendChild(watchBtn);
+          }
+
+          container.appendChild(card);
+        });
+      })
+      .catch(err => {
+        document.getElementById('matchesContainer').innerHTML = `<p style="color:red;">Failed to load matches.</p>`;
+        console.error(err);
+      });
+  </script>
 
 </body>
 </html>
