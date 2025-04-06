@@ -9,43 +9,43 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #0f1115;
+      background: #0e0f13;
       color: #fff;
     }
     header {
       text-align: center;
       padding: 20px;
-      background: #11141a;
+      background: #16191f;
       box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
     header h1 {
       color: #00ffc8;
-      font-size: 2rem;
-      text-shadow: 0 0 10px rgba(0, 255, 200, 0.5);
+      font-size: 2.2rem;
+      text-shadow: 0 0 8px rgba(0, 255, 200, 0.3);
     }
     .matches-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
       padding: 30px 20px;
     }
     .match-card {
       background: #1a1d24;
-      border-radius: 16px;
+      border-radius: 18px;
       padding: 20px;
-      text-align: center;
-      box-shadow: 0 0 10px rgba(0,255,200,0.1);
+      box-shadow: 0 0 10px rgba(0,255,200,0.05);
       transition: 0.3s ease;
+      position: relative;
     }
     .match-card:hover {
-      box-shadow: 0 0 15px rgba(0,255,200,0.3);
-      transform: scale(1.02);
+      box-shadow: 0 0 15px rgba(0,255,200,0.2);
+      transform: translateY(-5px);
     }
     .teams {
       display: flex;
       justify-content: space-around;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 18px;
     }
     .team {
       display: flex;
@@ -56,19 +56,23 @@
       width: 60px;
       height: 60px;
       border-radius: 50%;
-      box-shadow: 0 0 10px rgba(0,255,200,0.2);
       margin-bottom: 8px;
+      border: 2px solid #00ffc8;
+      box-shadow: 0 0 10px rgba(0,255,200,0.2);
     }
     .team span {
-      font-weight: bold;
-      font-size: 14px;
+      font-weight: 600;
+      font-size: 15px;
+      text-align: center;
     }
     .status {
-      margin: 10px 0;
-      font-size: 14px;
-      padding: 5px 10px;
-      display: inline-block;
-      border-radius: 20px;
+      margin: 8px 0;
+      font-size: 13px;
+      padding: 5px 12px;
+      border-radius: 50px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
     .live {
       background-color: #ff4b5c;
@@ -80,42 +84,42 @@
     }
     .watch-btn {
       display: inline-block;
-      margin-top: 10px;
-      padding: 10px 20px;
+      margin-top: 12px;
+      padding: 10px 22px;
       background: #00ffc8;
       color: #000;
       font-weight: bold;
       text-decoration: none;
       border-radius: 30px;
-      transition: background 0.3s ease;
+      transition: 0.3s ease;
     }
     .watch-btn:hover {
       background: #00cfa5;
     }
     footer {
-      background: #11141a;
-      padding: 20px;
+      background: #16191f;
+      padding: 25px 15px;
       text-align: center;
       box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
     }
     .footer-text {
       color: #aaa;
-      font-size: 14px;
-      margin-bottom: 10px;
+      font-size: 15px;
+      margin-bottom: 12px;
     }
     .whatsapp-btn {
       background-color: #25D366;
       color: white;
       border: none;
       padding: 10px 20px;
-      border-radius: 25px;
+      border-radius: 30px;
       font-size: 15px;
       font-weight: bold;
       cursor: pointer;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       transition: background 0.3s ease;
     }
     .whatsapp-btn:hover {
@@ -125,13 +129,13 @@
 </head>
 <body>
   <header>
-    <h1><i class="fa-solid fa-tv"></i> Live Streaming Matches</h1>
+    <h1><i class="fa-solid fa-tv"></i> Live Matches</h1>
   </header>
 
   <main class="matches-container" id="matches"></main>
 
   <footer>
-    <div class="footer-text">Stay connected with live sports updates</div>
+    <div class="footer-text">Stay updated with the latest matches and streams.</div>
     <a href="https://chat.whatsapp.com/DTd24MLztOa2I47Cymo1F6" target="_blank" class="whatsapp-btn">
       <i class="fab fa-whatsapp"></i> Join WhatsApp Group
     </a>
@@ -148,6 +152,7 @@
 
           const isLive = match.status.toLowerCase() === "live";
           const statusClass = isLive ? "live" : "upcoming";
+          const statusIcon = isLive ? '<i class="fa-solid fa-circle-play"></i>' : '<i class="fa-solid fa-clock"></i>';
 
           card.innerHTML = `
             <div class="teams">
@@ -160,7 +165,7 @@
                 <span>${match.team2.name}</span>
               </div>
             </div>
-            <div class="status ${statusClass}">${match.status}</div>
+            <div class="status ${statusClass}">${statusIcon} ${match.status}</div>
             ${isLive ? `<a href="watch.html?match=${match.id}" class="watch-btn"><i class="fa-solid fa-play"></i> Watch Now</a>` : ''}
           `;
           matchesContainer.appendChild(card);
