@@ -52,18 +52,29 @@
       flex-direction: column;
       align-items: center;
     }
-    .team img {
-      width: 60px;
-      height: 60px;
+    .logo-frame {
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
-      margin-bottom: 8px;
-      border: 2px solid #00ffc8;
-      box-shadow: 0 0 10px rgba(0,255,200,0.2);
+      padding: 5px;
+      background: linear-gradient(135deg, #00ffc8, #00bfa6);
+      box-shadow: 0 0 10px rgba(0,255,200,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-frame img {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #0e0f13;
     }
     .team span {
       font-weight: 600;
       font-size: 15px;
       text-align: center;
+      margin-top: 8px;
     }
     .center-status {
       display: flex;
@@ -178,7 +189,9 @@
           card.innerHTML = `
             <div class="teams">
               <div class="team">
-                <img src="${match.team1.logo}" alt="${match.team1.name}" />
+                <div class="logo-frame">
+                  <img src="${match.team1.logo}" alt="${match.team1.name}" />
+                </div>
                 <span>${match.team1.name}</span>
               </div>
               <div class="center-status">
@@ -186,7 +199,9 @@
                 ${!isLive ? `<div class="upcoming-note">Starts soon. Stay tuned!</div>` : ''}
               </div>
               <div class="team">
-                <img src="${match.team2.logo}" alt="${match.team2.name}" />
+                <div class="logo-frame">
+                  <img src="${match.team2.logo}" alt="${match.team2.name}" />
+                </div>
                 <span>${match.team2.name}</span>
               </div>
             </div>
