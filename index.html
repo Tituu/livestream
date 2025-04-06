@@ -1,97 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Live Matches</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #fefefe;
+      background: #0e0e0e;
+      color: #fff;
       margin: 0;
       padding: 0;
-      color: #222;
     }
+
     header {
-      background: #ffffff;
-      padding: 20px;
       text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 30px 20px;
+      background: #111;
+      box-shadow: 0 0 10px rgba(0,255,255,0.2);
     }
+
+    header h1 {
+      color: #00fff7;
+      text-shadow: 0 0 10px #00fff7;
+      font-size: 2em;
+    }
+
     #matches-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      padding: 20px;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      padding: 30px;
+      max-width: 1200px;
+      margin: auto;
     }
+
     .match-card {
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      background: #1b1b1b;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,255,255,0.1);
       padding: 20px;
       text-align: center;
-      width: 250px;
       position: relative;
+      transition: transform 0.3s ease;
     }
-    .team {
+
+    .match-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 15px rgba(0,255,255,0.3);
+    }
+
+    .team-name {
+      font-weight: bold;
+      font-size: 1.1em;
+      color: #00e5ff;
+      margin-bottom: 10px;
+    }
+
+    .team-logos {
       display: flex;
-      align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 20px;
     }
-    .team img {
-      width: 40px;
-      height: 40px;
+
+    .team-logos img {
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
+      border: 2px solid #00e5ff;
+      box-shadow: 0 0 8px #00e5ff77;
     }
+
     .vs {
-      font-size: 1.2em;
+      color: #888;
       margin: 10px 0;
-      color: #444;
+      font-size: 1em;
     }
+
     .watch-btn {
       display: inline-block;
       margin-top: 15px;
-      padding: 8px 16px;
-      background: #2196f3;
-      color: white;
-      border-radius: 5px;
+      padding: 10px 18px;
+      background: linear-gradient(45deg, #00e5ff, #00bcd4);
+      color: black;
+      font-weight: bold;
+      border-radius: 25px;
       text-decoration: none;
+      box-shadow: 0 0 10px #00bcd4;
+      transition: background 0.3s ease;
     }
+
+    .watch-btn:hover {
+      background: linear-gradient(45deg, #00bcd4, #00e5ff);
+    }
+
     .badge {
       position: absolute;
       top: 15px;
       right: 15px;
-      padding: 6px 10px;
+      padding: 5px 12px;
       font-size: 0.8em;
       font-weight: bold;
-      color: white;
-      border-radius: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+      color: #fff;
+      border-radius: 50px;
+      text-transform: uppercase;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
     }
+
     .live {
       background: #e53935;
-      box-shadow: 0 0 8px rgba(229, 57, 53, 0.6);
+      box-shadow: 0 0 12px rgba(229, 57, 53, 0.8);
     }
+
     .upcoming {
       background: #43a047;
-      box-shadow: 0 0 8px rgba(67, 160, 71, 0.6);
+      box-shadow: 0 0 12px rgba(67, 160, 71, 0.8);
     }
+
     footer {
       text-align: center;
+      background: #111;
       padding: 15px;
-      background: #f0f0f0;
+      color: #aaa;
       font-size: 0.9em;
+      border-top: 1px solid #222;
     }
+
     .popup {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background: #ffeb3b;
+      background: #00bcd4;
+      color: black;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 12px #00bcd4;
+      animation: slideIn 0.5s ease;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .popup a {
       color: #000;
-      padding: 12px;
-      border-radius: 6px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      font-weight: bold;
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -99,14 +154,15 @@
   <header>
     <h1>Live & Upcoming Matches</h1>
   </header>
+
   <main id="matches-container"></main>
 
   <footer>
-    <p>&copy; 2025 | Join us on <a href="#">Telegram</a> or <a href="#">WhatsApp</a></p>
+    &copy; 2025 | Join us on <a href="#">Telegram</a> or <a href="#">WhatsApp</a>
   </footer>
 
   <div class="popup">
-    Join our <a href="#">Telegram</a> or <a href="#">WhatsApp</a> for updates!
+    Join our <a href="#">Telegram</a> or <a href="#">WhatsApp</a> for instant updates!
   </div>
 
   <script>
@@ -116,20 +172,20 @@
         const container = document.getElementById('matches-container');
         data.forEach(match => {
           const badgeClass = match.status === 'live' ? 'live' : 'upcoming';
-          const badgeText = match.status === 'live' ? 'LIVE' : 'UPCOMING';
-          
+          const badgeText = match.status.toUpperCase();
+
           const card = document.createElement('div');
           card.className = 'match-card';
           card.innerHTML = `
             <div class="badge ${badgeClass}">${badgeText}</div>
-            <div class="team">
-              <img src="${match.logo1}" alt="${match.team1}"><span>${match.team1}</span>
+            <div class="team-name">${match.team1}</div>
+            <div class="team-name">${match.team2}</div>
+            <div class="team-logos">
+              <img src="${match.logo1}" alt="${match.team1}" />
+              <img src="${match.logo2}" alt="${match.team2}" />
             </div>
             <div class="vs">VS</div>
-            <div class="team">
-              <img src="${match.logo2}" alt="${match.team2}"><span>${match.team2}</span>
-            </div>
-            <a href="stream.html?id=${match.id}" class="watch-btn">Watch Live</a>
+            <a href="stream.html?id=${match.id}" class="watch-btn">Watch</a>
           `;
           container.appendChild(card);
         });
