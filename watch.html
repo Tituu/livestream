@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Watch Live</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0e0e10;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .player-wrapper {
+      width: 90%;
+      max-width: 900px;
+      border: 3px solid #00ffc8;
+      box-shadow: 0 0 20px #00ffc8;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+    video {
+      width: 100%;
+      height: auto;
+      background: #000;
+    }
+    .back-btn {
+      margin-bottom: 15px;
+      background: #1c1c24;
+      padding: 8px 15px;
+      border-radius: 10px;
+      color: #00ffc8;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .back-btn:hover {
+      background: #2c2c34;
+    }
+  </style>
+</head>
+<body>
+  <a class="back-btn" href="index.html"><i class="fas fa-arrow-left"></i> Back to Matches</a>
+
+  <div class="player-wrapper">
+    <video id="livePlayer" controls autoplay></video>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const matchID = urlParams.get('match');
+
+    fetch("https://example.com/matches.json") // replace with your actual JSON link
+      .then(res => res.json())
+      .then(data => {
+        const match = data.matches.find(m => m.id === matchID);
+        if (match && match.stream) {
+          const player = document.getElementById("livePlayer");
+          player.src = match.stream;
+        } else {
+          alert("Stream not found or not live yet.");
+        }
+      });
+  </script>
+</body>
+</html>
