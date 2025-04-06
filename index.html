@@ -90,17 +90,25 @@
     }
     .watch-btn {
       display: inline-block;
-      margin-top: 12px;
-      padding: 10px 22px;
-      background: #00ffc8;
-      color: #000;
+      margin-top: 18px;
+      padding: 10px 24px;
+      font-size: 15px;
       font-weight: bold;
       text-decoration: none;
       border-radius: 30px;
-      transition: 0.3s ease;
+      background: linear-gradient(135deg, #00ffc8, #00bfa6);
+      color: #000;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 12px rgba(0,255,200,0.3);
     }
     .watch-btn:hover {
-      background: #00cfa5;
+      transform: scale(1.05);
+      box-shadow: 0 0 18px rgba(0,255,200,0.4);
+    }
+    .btn-wrapper {
+      display: flex;
+      justify-content: center;
     }
     .upcoming-note {
       font-size: 13px;
@@ -183,7 +191,7 @@
               </div>
             </div>
             ${isLive 
-              ? `<a href="watch.html?match=${match.id}" class="watch-btn"><i class="fa-solid fa-play"></i> Watch Now</a>` 
+              ? `<div class="btn-wrapper"><a href="watch.html?match=${match.id}" class="watch-btn"><i class="fa-solid fa-play"></i> Watch Now</a></div>` 
               : ``}
           `;
           matchesContainer.appendChild(card);
