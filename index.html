@@ -128,8 +128,8 @@ footer {
   <h1><i class="fa-solid fa-fire"></i> Upcoming & Live Matches</h1>  <div class="matches" id="matchList"></div>  <footer>
     <p>Made with <i class="fa-solid fa-heart"></i> | Join us on Telegram & WhatsApp</p>
   </footer>  <script>
-    fetch('matches.json')
-      .then(response => response.json())
+    fetch('streams.json')
+      .then(res => res.json())
       .then(matches => {
         const matchList = document.getElementById('matchList');
         matches.forEach(match => {
@@ -149,6 +149,7 @@ footer {
           `;
           matchList.appendChild(card);
         });
-      });
+      })
+      .catch(err => console.error('Error loading matches:', err));
   </script></body>
 </html>
