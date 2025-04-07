@@ -52,24 +52,14 @@
     }
 
     @keyframes glowPulse {
-      0% {
-        box-shadow: 0 0 0px transparent;
-      }
-      50% {
-        box-shadow: 0 0 20px rgba(0,255,255,0.5);
-      }
-      100% {
-        box-shadow: 0 0 0px transparent;
-      }
-    }
-
-    .match-card img {
-      height: 60px;
+      0% { box-shadow: 0 0 0px transparent; }
+      50% { box-shadow: 0 0 20px rgba(0,255,255,0.5); }
+      100% { box-shadow: 0 0 0px transparent; }
     }
 
     .badge {
       display: inline-block;
-      margin-top: 10px;
+      margin-top: 12px;
       padding: 4px 12px;
       border-radius: 20px;
       font-size: 12px;
@@ -158,16 +148,29 @@
           }
 
           card.innerHTML = `
-            <div style="display:flex;justify-content:center;align-items:center;gap:12px;">
-              <img src="${match.team1.logo}" alt="${match.team1.name}">
-              <img src="${match.team2.logo}" alt="${match.team2.name}">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+              <div style="text-align: center;">
+                <div style="background: rgba(255,255,255,0.05); border-radius: 50%; padding: 10px; box-shadow: 0 0 10px rgba(0,255,255,0.2);">
+                  <img src="${match.team1.logo}" alt="${match.team1.name}" style="height: 60px; width: 60px; object-fit: contain;">
+                </div>
+                <div style="margin-top: 8px; font-size: 13px; font-weight: 600;">${match.team1.name}</div>
+              </div>
+              <div style="text-align: center;">
+                <div style="background: rgba(255,255,255,0.05); border-radius: 50%; padding: 10px; box-shadow: 0 0 10px rgba(255,0,255,0.2);">
+                  <img src="${match.team2.logo}" alt="${match.team2.name}" style="height: 60px; width: 60px; object-fit: contain;">
+                </div>
+                <div style="margin-top: 8px; font-size: 13px; font-weight: 600;">${match.team2.name}</div>
+              </div>
             </div>
-            <div style="margin-top:10px;font-weight:bold;">${match.team1.name} vs ${match.team2.name}</div>
-            <span class="badge ${match.status === 'Live' ? 'live' : 'upcoming'}">${match.status}</span>
+
+            <div style="margin-top:14px;">
+              <span class="badge ${match.status === 'Live' ? 'live' : 'upcoming'}">${match.status}</span>
+            </div>
+
             ${
               match.status === 'Live'
-              ? `<div><a class="watch-button" href="watch.html?id=${match.id}"><i class="fas fa-play-circle"></i> Watch Now</a></div>`
-              : `<div style="margin-top:10px;font-size:13px;color:#999;">Stay Tuned!</div>`
+                ? `<div><a class="watch-button" href="watch.html?id=${match.id}"><i class="fas fa-play-circle"></i> Watch Now</a></div>`
+                : `<div style="margin-top:10px;font-size:13px;color:#999;">Stay Tuned!</div>`
             }
           `;
 
