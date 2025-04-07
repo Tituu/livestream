@@ -3,191 +3,86 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Live Matches - StreamZone</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
+  <title>Watch Live Match</title>
+  <link href="https://vjs.zencdn.net/8.9.0/video-js.css" rel="stylesheet" />
   <style>
-    :root {
-      --bg: #101010;
-      --glass: rgba(255, 255, 255, 0.05);
-      --text: #fff;
-      --primary: #4fc3f7;
-      --border-radius: 16px;
-    }
-
     body {
       margin: 0;
+      background: #101010;
       font-family: 'Poppins', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-    }
-
-    header {
-      padding: 20px 40px;
-      font-size: 26px;
-      font-weight: 600;
-      color: var(--primary);
-      text-shadow: 0 0 5px var(--primary);
-    }
-
-    .card-container {
+      color: #fff;
       display: flex;
-      overflow-x: auto;
-      gap: 20px;
-      padding: 20px;
-      scroll-behavior: smooth;
-    }
-
-    .card {
-      flex: 0 0 auto;
-      width: 240px;
-      background: var(--glass);
-      backdrop-filter: blur(15px);
-      border-radius: var(--border-radius);
-      padding: 16px;
-      box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
-      transition: transform 0.3s, box-shadow 0.3s;
-      border: 2px solid transparent;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-    }
-
-    .teams {
-      display: flex;
-      justify-content: space-around;
+      flex-direction: column;
       align-items: center;
-      gap: 10px;
-    }
-
-    .team-logo {
-      width: 60px;
-      height: 60px;
-      object-fit: contain;
-    }
-
-    .team-name {
-      text-align: center;
-      font-weight: 600;
-      font-size: 14px;
-      margin-top: 8px;
-    }
-
-    .match-status {
-      display: inline-block;
-      margin: 10px 0;
-      padding: 4px 10px;
-      font-size: 12px;
-      font-weight: bold;
-      border-radius: 30px;
-    }
-
-    .live {
-      background: #ff1744;
-      color: #fff;
-    }
-
-    .upcoming {
-      background: #555;
-      color: #eee;
-    }
-
-    .watch-btn {
-      display: block;
-      margin: 12px auto 0;
-      padding: 8px 16px;
-      background: linear-gradient(135deg, #4fc3f7, #81d4fa);
-      color: #000;
-      border: none;
-      border-radius: 30px;
-      text-align: center;
-      font-size: 14px;
-      font-weight: bold;
-      text-decoration: none;
-      box-shadow: 0 0 10px #4fc3f7;
-    }
-
-    footer {
-      background: transparent;
-      text-align: center;
       padding: 20px;
-      color: #aaa;
-      font-size: 14px;
     }
 
-    footer a {
+    h2 {
+      margin-bottom: 20px;
+      font-size: 20px;
+      text-align: center;
+    }
+
+    .video-container {
+      width: 100%;
+      max-width: 900px;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
+      overflow: hidden;
+    }
+
+    video {
+      width: 100%;
+      height: auto;
+    }
+
+    .not-found {
+      font-size: 18px;
+      color: #f44336;
+      margin-top: 40px;
+    }
+
+    a.back {
       color: #4fc3f7;
+      margin-top: 30px;
       text-decoration: none;
-    }
-
-    footer a:hover {
-      color: #fff;
-    }
-
-    ::-webkit-scrollbar {
-      height: 6px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #4fc3f7;
-      border-radius: 4px;
+      display: inline-block;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
 
-  <header>Live Cricket Matches</header>
+  <h2>Now Streaming</h2>
+  <div class="video-container" id="playerContainer"></div>
 
-  <div class="card-container" id="matches"></div>
+  <a class="back" href="index.html"><i class="fa fa-arrow-left"></i> Back to Matches</a>
 
-  <footer>
-    <p>
-      <a href="https://chat.whatsapp.com/DTd24MLztOa2I47Cymo1F6" target="_blank">
-        <i class="fab fa-whatsapp"></i> Join WhatsApp Group
-      </a>
-    </p>
-    <p><i class="fas fa-bolt"></i> Powered by StreamZone</p>
-  </footer>
-
+  <script src="https://vjs.zencdn.net/8.9.0/video.min.js"></script>
   <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const matchStreamID = urlParams.get('match');
     const jsonURL = 'https://raw.githubusercontent.com/Tituu/livestream/main/matches.json';
-
-    const gradientColors = [
-      "linear-gradient(135deg, #4fc3f7, #81d4fa)",
-      "linear-gradient(135deg, #ff9a9e, #fad0c4)",
-      "linear-gradient(135deg, #a18cd1, #fbc2eb)",
-      "linear-gradient(135deg, #fbc2eb, #a6c1ee)",
-      "linear-gradient(135deg, #ffecd2, #fcb69f)"
-    ];
 
     fetch(jsonURL)
       .then(res => res.json())
       .then(data => {
-        const container = document.getElementById('matches');
-        data.forEach(match => {
-          const card = document.createElement('div');
-          card.className = 'card';
-          card.style.borderImage = `${gradientColors[Math.floor(Math.random() * gradientColors.length)]} 1`;
-
-          card.innerHTML = `
-            <div class="teams">
-              <div>
-                <img src="${match.team1.logo}" alt="${match.team1.name}" class="team-logo" />
-                <div class="team-name">${match.team1.name}</div>
-              </div>
-              <div>
-                <img src="${match.team2.logo}" alt="${match.team2.name}" class="team-logo" />
-                <div class="team-name">${match.team2.name}</div>
-              </div>
-            </div>
-            <div class="match-status ${match.status.toLowerCase()}">${match.status}</div>
-            ${match.status.toLowerCase() === 'live' ? `<a class="watch-btn" href="watch.html?match=${encodeURIComponent(match.stream)}">Watch Now</a>` : ''}
+        const match = data.find(m => m.stream === matchStreamID);
+        if (match) {
+          const playerHTML = `
+            <video-js id="livePlayer" class="video-js vjs-default-skin" controls autoplay preload="auto" data-setup='{}'>
+              <source src="${match.stream}" type="application/x-mpegURL" />
+            </video-js>
           `;
-          container.appendChild(card);
-        });
+          document.getElementById('playerContainer').innerHTML = playerHTML;
+          videojs('livePlayer');
+        } else {
+          document.getElementById('playerContainer').innerHTML = `<div class="not-found">Match stream not found.</div>`;
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById('playerContainer').innerHTML = `<div class="not-found">Error loading match data.</div>`;
       });
   </script>
 
