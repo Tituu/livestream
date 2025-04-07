@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -120,20 +119,14 @@
   </style>
 </head>
 <body>
-  <header><i class="fas fa-bolt"></i> Live Cricket Stream</header>
-
-  <div class="card-container" id="matchContainer"></div>
-
-  <footer>
+  <header><i class="fas fa-bolt"></i> Live Cricket Stream</header>  <div class="card-container" id="matchContainer"></div>  <footer>
     <p>
       <a href="https://chat.whatsapp.com/DTd24MLztOa2I47Cymo1F6" target="_blank">
         <i class="fab fa-whatsapp"></i> Join Our WhatsApp Group
       </a>
     </p>
     <p><i class="far fa-copyright"></i> 2025 CyberStream. All rights reserved.</p>
-  </footer>
-
-  <script>
+  </footer>  <script>
     fetch('https://raw.githubusercontent.com/Tituu/livestream/main/matches.json')
       .then(res => res.json())
       .then(data => {
@@ -158,6 +151,5 @@
           container.appendChild(card);
         });
       });
-  </script>
-</body>
+  </script></body>
 </html>
