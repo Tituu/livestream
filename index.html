@@ -1,98 +1,132 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Live Sports Matches</title>
+  <title>Cyberpunk Live Stream</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Titillium+Web:wght@400;600&family=Teko:wght@500;700&display=swap" rel="stylesheet">
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
-      background: radial-gradient(circle at top left, #1a1a2e, #0f0f1c);
-      color: #fff;
+      padding: 0;
+    }
+    body {
+      background: linear-gradient(120deg, #0f0f1c, #1a1a2e);
       font-family: 'Titillium Web', sans-serif;
+      color: #ffffff;
+      overflow-x: hidden;
     }
     header {
       text-align: center;
-      padding: 20px 10px 0;
-    }
-    header h1 {
+      padding: 40px 20px 20px;
       font-family: 'Michroma', sans-serif;
-      font-size: 1.8rem;
+      font-size: 2rem;
       color: #00ffff;
+      position: relative;
+      animation: fadeInDown 1s ease-in-out;
+    }
+    .preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #0f0f1c;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .preloader .loader {
+      border: 6px solid #333;
+      border-top: 6px solid #00ffff;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
     }
     .matches {
       display: flex;
       overflow-x: auto;
-      padding: 20px 10px;
-      gap: 20px;
+      padding: 30px 10px;
+      gap: 25px;
+      animation: fadeIn 1.5s ease-in-out;
     }
     .match-card {
       flex: 0 0 auto;
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.06);
       border-radius: 20px;
       padding: 20px;
-      width: 220px;
+      width: 250px;
       position: relative;
-      transition: 0.4s ease;
       border: 2px solid transparent;
+      transition: 0.5s ease;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      animation: zoomIn 1s ease;
     }
-    .match-card.glow {
-      box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-      border: 2px solid #00ffff;
+    .match-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
     }
     .teams {
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       align-items: center;
+      gap: 15px;
     }
     .teams img {
       height: 60px;
       width: 60px;
       object-fit: contain;
-      border-radius: 10px;
     }
     .team-names {
       text-align: center;
-      margin-top: 10px;
+      margin-top: 15px;
       font-family: 'Teko', sans-serif;
       font-size: 1.3rem;
+      color: #00f5c9;
     }
     .badge {
       position: absolute;
       top: 15px;
       right: 15px;
-      background: linear-gradient(45deg, #ff00cc, #3333ff);
-      padding: 5px 12px;
+      background: linear-gradient(90deg, #ff00cc, #3333ff);
+      padding: 5px 15px;
       border-radius: 20px;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-family: 'Teko', sans-serif;
-      text-transform: uppercase;
     }
     .watch-button {
       margin-top: 15px;
       display: block;
-      width: 100%;
       text-align: center;
       background: linear-gradient(to right, #00f5c9, #00d9ff);
       border: none;
       color: #000;
       padding: 10px 15px;
       border-radius: 25px;
-      font-weight: bold;
       font-family: 'Teko', sans-serif;
       text-decoration: none;
-      transition: 0.3s ease;
+      font-size: 1.2rem;
     }
-    .watch-button:hover {
-      transform: scale(1.05);
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100vw;
+      pointer-events: none;
+      background: radial-gradient(circle at center, rgba(0,255,255,0.15), transparent);
+      z-index: 1;
     }
     footer {
-      margin-top: 40px;
-      padding: 20px 10px;
-      background: #0f0f1c;
+      padding: 30px 10px;
       text-align: center;
+      font-size: 0.95rem;
+      background: #0d0d18;
+      color: #aaa;
     }
     .join-btn {
       background: linear-gradient(45deg, #25D366, #128C7E);
@@ -104,57 +138,68 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      transition: 0.3s ease;
-    }
-    .join-btn:hover {
-      transform: scale(1.05);
+      margin-top: 10px;
     }
     .join-btn i {
       font-size: 1.2rem;
     }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes zoomIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
   </style>
 </head>
 <body>
-
-<header>
-  <h1><i class="fas fa-bolt"></i> Live Cricket Matches</h1>
-</header>
-
-<div class="matches" id="matchContainer">
-  <!-- Cards loaded dynamically -->
+<div class="preloader" id="preloader">
+  <div class="loader"></div>
 </div>
-
+<div class="overlay"></div>
+<header>
+  <h1><i class="fas fa-bolt"></i> Cyberpunk Cricket Live</h1>
+</header>
+<div class="matches" id="matchContainer"></div>
 <footer>
+  <p>Stay connected for live action.</p>
   <a href="https://chat.whatsapp.com/DTd24MLztOa2I47Cymo1F6" class="join-btn" target="_blank">
-    <i class="fab fa-whatsapp"></i> Join Our WhatsApp Group
+    <i class="fab fa-whatsapp"></i> Join WhatsApp Group
   </a>
 </footer>
-
 <script>
   const jsonURL = 'https://raw.githubusercontent.com/Tituu/livestream/main/matches.json';
-
-  fetch(jsonURL)
-    .then(res => res.json())
-    .then(data => {
-      const container = document.getElementById('matchContainer');
-      data.matches.forEach(match => {
-        const card = document.createElement('div');
-        card.className = 'match-card';
-        if (Math.random() > 0.6) card.classList.add('glow');
-
-        card.innerHTML = `
-          <div class="badge">${match.status}</div>
-          <div class="teams">
-            <img src="${match.team1.logo}" alt="${match.team1.name}">
-            <img src="${match.team2.logo}" alt="${match.team2.name}">
-          </div>
-          <div class="team-names">${match.team1.name} vs ${match.team2.name}</div>
-          ${match.status.toLowerCase() === 'live' ? `<a class="watch-button" href="watch.html?stream=${encodeURIComponent(match.stream)}">Watch Now</a>` : ''}
-        `;
-        container.appendChild(card);
+  window.onload = () => {
+    setTimeout(() => document.getElementById('preloader').style.display = 'none', 1000);
+    fetch(jsonURL)
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('matchContainer');
+        data.matches.forEach(match => {
+          const card = document.createElement('div');
+          card.className = 'match-card';
+          card.innerHTML = `
+            <div class="badge">${match.status}</div>
+            <div class="teams">
+              <img src="${match.team1.logo}" alt="${match.team1.name}">
+              <img src="${match.team2.logo}" alt="${match.team2.name}">
+            </div>
+            <div class="team-names">${match.team1.name} vs ${match.team2.name}</div>
+            ${match.status.toLowerCase() === 'live' ? `<a class="watch-button" href="watch.html?stream=${encodeURIComponent(match.stream)}">Watch Now</a>` : ''}
+          `;
+          container.appendChild(card);
+        });
       });
-    });
+  }
 </script>
-
 </body>
 </html>
