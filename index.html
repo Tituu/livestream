@@ -1,36 +1,38 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cyberpunk Live Stream</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400&family=Poppins:wght@500&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CyberStream Matches</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
     body {
-      background: linear-gradient(145deg, #0f0c29, #302b63, #24243e);
-      font-family: 'Rajdhani', sans-serif;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #0f0f1a;
       color: #fff;
       overflow-x: hidden;
     }
+
     header {
-      padding: 20px;
+      padding: 20px 0;
       text-align: center;
+      color: #00ffff;
       font-size: 28px;
-      font-family: 'Rajdhani', sans-serif;
-      color: #0ff;
-      text-shadow: 0 0 10px #0ff;
+      font-weight: bold;
+      letter-spacing: 2px;
     }
-    .card-container {
+
+    .scroll-container {
       display: flex;
       overflow-x: auto;
       gap: 20px;
-      padding: 30px;
+      padding: 30px 20px;
+      scroll-snap-type: x mandatory;
     }
+
     .card {
       flex: 0 0 auto;
       width: 250px;
@@ -38,118 +40,144 @@
       background: linear-gradient(145deg, #1a1a2e, #16213e);
       padding: 20px;
       position: relative;
-      box-shadow: 0 0 15px rgba(0,255,255,0.3);
       transition: transform 0.4s ease;
-      animation: float 6s ease-in-out infinite;
+      overflow: hidden;
+      scroll-snap-align: start;
     }
+
     .card:hover {
       transform: translateY(-10px);
-      box-shadow: 0 0 25px rgba(0,255,255,0.6);
     }
+
+    .gradient-red { box-shadow: 0 0 15px 2px #ff0066; }
+    .gradient-blue { box-shadow: 0 0 15px 2px #00f0ff; }
+    .gradient-green { box-shadow: 0 0 15px 2px #00ff99; }
+    .gradient-orange { box-shadow: 0 0 15px 2px #ff9900; }
+    .gradient-purple { box-shadow: 0 0 15px 2px #cc00ff; }
+
     .teams {
       display: flex;
-      justify-content: center;
-      gap: 15px;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 10px;
     }
+
     .team-logo {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       object-fit: contain;
+      margin-bottom: 8px;
     }
+
     .team-name {
-      font-family: 'Poppins', sans-serif;
-      text-align: center;
       font-size: 14px;
-      color: #f0f0f0;
-    }
-    .match-status {
-      font-size: 12px;
-      padding: 3px 8px;
-      border-radius: 12px;
-      display: inline-block;
-      margin: 8px auto;
       text-align: center;
+      color: #eee;
     }
-    .live {
-      background: #ff004f;
+
+    .match-status {
+      display: inline-block;
+      padding: 5px 10px;
+      font-size: 12px;
+      border-radius: 5px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .match-status.live {
+      background: #ff0066;
+      color: white;
+    }
+
+    .match-status.upcoming {
+      background: #666;
       color: #fff;
     }
-    .upcoming {
-      background: #999;
-      color: #111;
-    }
+
     .watch-btn {
       display: block;
-      width: 100%;
-      padding: 10px;
-      border: none;
-      border-radius: 10px;
-      background: linear-gradient(to right, #00f260, #0575e6);
-      color: #fff;
+      text-align: center;
       margin-top: 12px;
-      font-size: 14px;
+      background: linear-gradient(135deg, #ff0066, #00f0ff);
+      padding: 10px 15px;
+      border-radius: 30px;
+      color: #000;
       font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      text-decoration: none;
+      transition: transform 0.2s ease;
     }
+
     .watch-btn:hover {
-      background: linear-gradient(to right, #0575e6, #00f260);
       transform: scale(1.05);
     }
+
     footer {
+      background: transparent;
       text-align: center;
       padding: 20px;
-      background: #111;
       color: #ccc;
       font-size: 14px;
     }
+
     footer a {
       color: #0ff;
       text-decoration: none;
-      margin: 0 10px;
+      font-weight: bold;
     }
-    footer a:hover {
-      color: #fff;
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+
+    footer i {
+      margin-right: 5px;
     }
   </style>
 </head>
 <body>
-  <header><i class="fas fa-bolt"></i> Live Cricket Stream</header>  <div class="card-container" id="matchContainer"></div>  <footer>
+  <header>
+    <i class="fas fa-bolt"></i> Live Cricket Matches
+  </header>
+
+  <div class="scroll-container" id="match-container">
+    <!-- Match cards injected here -->
+  </div>
+
+  <footer>
     <p>
       <a href="https://chat.whatsapp.com/DTd24MLztOa2I47Cymo1F6" target="_blank">
         <i class="fab fa-whatsapp"></i> Join Our WhatsApp Group
       </a>
     </p>
-    <p><i class="far fa-copyright"></i> 2025 CyberStream. All rights reserved.</p>
-  </footer>  <script>
+    <p>
+      <i class="far fa-copyright"></i> 2025 CyberStream
+    </p>
+  </footer>
+
+  <script>
+    const container = document.getElementById('match-container');
+
     fetch('https://raw.githubusercontent.com/Tituu/livestream/main/matches.json')
       .then(res => res.json())
       .then(data => {
-        const container = document.getElementById('matchContainer');
+        const gradients = ['gradient-red', 'gradient-blue', 'gradient-green', 'gradient-orange', 'gradient-purple'];
         data.matches.forEach(match => {
           const card = document.createElement('div');
-          card.className = 'card';
-          card.innerHTML = `
+          const randomClass = gradients[Math.floor(Math.random() * gradients.length)];
+          card.className = \`card \${randomClass}\`;
+          card.innerHTML = \`
             <div class="teams">
               <div>
-                <img src="${match.team1.logo}" class="team-logo">
-                <div class="team-name">${match.team1.name}</div>
+                <img src="\${match.team1.logo}" class="team-logo">
+                <div class="team-name">\${match.team1.name}</div>
               </div>
               <div>
-                <img src="${match.team2.logo}" class="team-logo">
-                <div class="team-name">${match.team2.name}</div>
+                <img src="\${match.team2.logo}" class="team-logo">
+                <div class="team-name">\${match.team2.name}</div>
               </div>
             </div>
-            <div class="match-status ${match.status === 'Live' ? 'live' : 'upcoming'}">${match.status}</div>
-            ${match.status === 'Live' ? `<a class='watch-btn' href='watch.html?match=${match.id}'><i class='fas fa-play'></i> Watch Now</a>` : '<div style="text-align:center; font-size:12px; margin-top:8px;">Upcoming Match</div>'}
-          `;
+            <div class="match-status \${match.status === 'Live' ? 'live' : 'upcoming'}">\${match.status}</div>
+            \${match.status === 'Live' ? \`<a class='watch-btn' href='watch.html?match=\${match.id}'><i class='fas fa-play'></i> Watch Now</a>\` : '<div style="text-align:center; font-size:12px; margin-top:8px;">Upcoming Match</div>'}
+          \`;
           container.appendChild(card);
         });
       });
-  </script></body>
+  </script>
+</body>
 </html>
